@@ -1,0 +1,105 @@
+{% extends 'base_full.html' %}
+
+{% block title %}Attendance - Sign Up{% endblock %}
+
+{% block content %}
+<div class="container-fluid d-flex justify-content-center align-items-center" >
+    <div class="card p-5" style="width: 100%; max-width: 500px; border-radius: 10px;">
+        <h2 class="text-center mb-4" style="font-weight: 700;">Create Your Account</h2>
+
+        <form method="POST">
+            {% csrf_token %}
+            
+            {% if form.non_field_errors %}
+            <div class="alert alert-danger" role="alert">
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+        
+
+            <div class="form-row">
+                <!-- Render First Name Field -->
+                <div class="form-group col-md-6">
+                    <label for="id_first_name">First Name</label>
+                    {{ form.first_name }}
+                    {% if form.first_name.errors %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ form.first_name.errors }}</div>
+                    {% endif %}
+                </div>
+
+                <!-- Render Last Name Field -->
+                <div class="form-group col-md-6">
+                    <label for="id_last_name">Last Name</label>
+                   {{ form.last_name }}
+                    {% if form.last_name.errors %}
+                    <div class="alert alert-danger" role="alert">{{ form.last_name.errors }}</div>
+                    {% endif %}
+                </div>
+            </div>
+            <!-- Render Email Field -->
+            <div class="form-group">
+                <label for="id_email">Email</label>
+                {{form.email}}
+                {% if form.email.errors %}
+                <div class="alert alert-danger" role="alert">{{ form.email.errors }}</div>
+                {% endif %}
+            </div>
+            <div class="form-row">
+                <!-- Render Date of Birth Field -->
+                <div class="form-group col-md-6">
+                    <label for="id_date_of_birth">Date of Birth</label>
+                   {{ form.date_of_birth}}
+                    {% if form.date_of_birth.errors %}
+                   
+                    <div class="alert alert-danger" role="alert">{{ form.date_of_birth.errors }}</div>
+                    {% endif %}
+                </div>
+
+                <!-- Render Phone Number Field -->
+                <div class="form-group col-md-6">
+                    <label for="id_phone_number">Phone Number</label>
+                    {{ form.phone_number }}
+                    {% if form.phone_number.errors %}
+                    <div class="alert alert-danger" role="alert">{{ form.phone_number.errors }}</div>
+                    {% endif %}
+                </div>
+            </div>
+
+            
+
+            <!-- Render Address Field -->
+            <div class="form-group">
+                <label for="id_address">Address</label>
+              {{ form.address }}
+                {% if form.address.errors %}
+                <div class="alert alert-danger" role="alert">{{ form.address.errors }}</div>
+                {% endif %}
+            </div>
+
+            <!-- Render Password Field -->
+            <div class="form-group">
+                <label for="id_password">Password</label>
+                {{ form.password1 }}
+                {% if form.password1.errors %}
+                <div class="alert alert-danger" role="alert">{{ form.password.errors }}</div>
+                {% endif %}
+            </div>
+
+            <!-- Render Confirm Password Field -->
+            <div class="form-group">
+                <label for="id_confirm_password">Confirm Password</label>
+                {{ form.password2 }}
+                {% if form.password2.errors %}
+                <div class="alert alert-danger" role="alert">{{ form.password2.errors }}</div>
+                {% endif %}
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary btn-block mt-4">Sign Up</button>
+        </form>
+
+        <p class="text-center mt-3">Already have an account? <a href="#" class="text-primary">Login here</a>.</p>
+    </div>
+</div>
+{% endblock %}
