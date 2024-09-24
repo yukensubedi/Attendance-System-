@@ -54,6 +54,6 @@ The system provides a RESTful API that can be accessed at `/api/v1/docs/`, which
     email: testuser@example.com
     pswd: nepal123
     ```
-### API DOcumentation
+### API Documentation
 
 To access the API documentation, navigate to http://127.0.0.1:8000/api/v1/docs/ after starting the server.
