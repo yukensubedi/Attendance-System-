@@ -24,8 +24,8 @@ The system provides a RESTful API that can be accessed at `/api/v1/docs/`, which
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/your-username/attendance-system.git
-    cd attendance-system
+    git clone https://github.com/yukensubedi/Attendance-System-.git
+    cd Attendance-System-
     ```
 
 2. Install dependencies:
