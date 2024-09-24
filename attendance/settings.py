@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,6 +38,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'rest_framework',
+    'rest_framework.authtoken',
+    'drf_spectacular',
+
+    'user',
+    'attendancereport',
+    'api',
 ]
 
 MIDDLEWARE = [
@@ -54,8 +63,8 @@ ROOT_URLCONF = 'attendance.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],   
+        'APP_DIRS': True,   
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -99,13 +108,59 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
+AUTH_USER_MODEL = 'user.User'
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
+REST_FRAMEWORK = {
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    "DEFAULT_PAGINATION_CLASS": "api.pagination.CustomPagination",
+    "PAGE_SIZE": 10,
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+
+   
+}
+
+SPECTACULAR_SETTINGS = {
+    'SCHEMA_PATH_PREFIX': r'/api/v1',
+    'DEFAULT_GENERATOR_CLASS': 'drf_spectacular.generators.SchemaGenerator',
+    'SERVE_PERMISSIONS': ['rest_framework.permissions.AllowAny'],
+    'COMPONENT_SPLIT_PATCH': True,
+    'COMPONENT_SPLIT_REQUEST': True,
+    # "SWAGGER_UI_SETTINGS": {
+    #     "deepLinking": True,
+    #     "persistAuthorization": True,
+    #     "displayOperationId": True,
+    #     "displayRequestDuration": True
+    # },
+    'UPLOADED_FILES_USE_URL': True,
+    'TITLE': 'Attendance Management System',
+    'DESCRIPTION': 'AMS APIs',
+    'VERSION': '0.2.0',
+}
+
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Token': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header',
+            'description': "Token-based authentication. Example: `Token <your_token>`"
+        }
+    },
+    'USE_SESSION_AUTH': False,  # Disables Django session auth
+}
+
+
+
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Kathmandu'
 
 USE_I18N = True
 
@@ -121,3 +176,9 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# Set the cutoff time for attendance marking
+ATTENDANCE_CUTOFF_TIME = '18:00'  # 6 PM
+
+LOGIN_URL = 'login'

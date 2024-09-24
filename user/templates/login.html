@@ -1,0 +1,105 @@
+{% extends 'base_full.html' %}
+
+{% block title %}Attendance - Login{% endblock %}
+
+{% block content %}
+<div class="container-fluid d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <div class="row w-100">
+        <!-- Left Box with Text -->
+        <div class="col-md-6 d-flex flex-column justify-content-center align-items-start p-5" style="background-color: #f8f9fa; border-radius: 10px 0 0 10px;">
+            <h2 class="mb-4" style="font-weight: 700;">Welcome to Attendance Management System</h2>
+            <p class="lead">Manage your attendance easily and efficiently. Sign in to access your dashboard and keep track of your records.</p>
+        </div>
+
+        <!-- Vertical Divider -->
+        <div class="col-md-1 d-flex justify-content-center align-items-center">
+            <div style="height: 100%; width: 1px; background-color: #dee2e6;"></div>
+        </div>
+
+        <!-- Right Box with Login Form -->
+            <div class="p-5" style="width: 100%; max-width: 400px;  border-radius: 10px;">
+                <h2 class="text-center mb-4" style="font-weight: 700;">Attendance</h2>
+
+                <form method="POST">
+                    {% csrf_token %}
+                    
+                   
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ form.non_field_errors }}
+                        </div>
+                    {% endif %}
+                    
+                  
+                    <div class="form-group">
+                        <label for="id_email">Email: </label>
+                        {{ form.username }}
+                        {% if form.username.errors %}
+                            <div class="text-danger">{{ form.username.errors }}</div>
+                        {% endif %}
+                    </div>
+        
+                  
+                    <div class="form-group">
+                        <label for="id_password">Password: </label>
+                        {{ form.password }}
+                        {% if form.password.errors %}
+                            <div class="text-danger">{{ form.password.errors }}</div>
+                        {% endif %}
+                    </div>
+        
+                  
+                    <button type="submit" class="btn btn-primary btn-block mt-4">Login</button>
+                </form>
+        
+            </div>
+       
+    </div>
+</div>
+{% endblock %}
+
+
+<!-- 
+<div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+   
+    <div class="card shadow-lg p-5" style="width: 100%; max-width: 400px;">
+        
+
+        <form method="POST">
+            {% csrf_token %}
+            
+           
+            {% if form.non_field_errors %}
+                <div class="alert alert-danger" role="alert">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+            
+          
+            <div class="form-group">
+                <label for="id_email">Email</label>
+                {{ form.username }}
+                {% if form.username.errors %}
+                    <div class="text-danger">{{ form.username.errors }}</div>
+                {% endif %}
+            </div>
+
+          
+            <div class="form-group">
+                <label for="id_password">Password</label>
+                {{ form.password }}
+                {% if form.password.errors %}
+                    <div class="text-danger">{{ form.password.errors }}</div>
+                {% endif %}
+            </div>
+
+          
+            <button type="submit" class="btn btn-primary btn-block mt-4">Login</button>
+        </form>
+
+       
+    </div>
+</div>
+
+
+ -->

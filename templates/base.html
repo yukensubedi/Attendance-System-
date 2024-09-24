@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% block title %}Attendance{% endblock %}</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+   
+
+    <!-- Google Fonts (Optional) -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f7f7f7;
+        }
+
+        /* Navbar Styling */
+        .navbar {
+            background-color: #343a40; /* Dark subtle color */
+        }
+
+        .navbar-brand, .nav-link {
+            color: #ffffff !important;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: #f8f9fa !important;
+            background-color: #495057;
+            border-radius: 5px;
+        }
+
+        /* Main Container */
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Footer Styling */
+        footer {
+            background-color: #343a40;
+            padding: 15px;
+        }
+
+        footer p, footer a {
+            color: #ced4da;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: #f8f9fa;
+            text-decoration: none;
+        }
+
+        /* Buttons (Optional, for later use) */
+        .btn-custom {
+            background-color: #6c757d;
+            color: #ffffff;
+            border: none;
+        }
+
+        .btn-custom:hover {
+            background-color: #5a6268;
+            color: #f8f9fa;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand" href="#">Attendance Management System</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Home</a>
+                </li>
+                
+               
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                   
+                  
+                    <a class="nav-link" href="{% url 'logout-confirm' %}">Logout</a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Register</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    {% if messages %}
+    <div class="alert-container">
+        {% for message in messages %}
+            <div class="alert alert-{% if message.tags == 'error' %}danger{% elif message.tags == 'success' %}success{% endif %} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+    <!-- Main Content -->
+    <!-- <div class="container mt-5"> -->
+        {% block content %}
+        <!-- Page specific content goes here -->
+        {% endblock %}
+    <!-- </div> -->
+
+   
+    <!-- Optional JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

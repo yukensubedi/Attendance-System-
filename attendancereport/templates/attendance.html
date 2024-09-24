@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Attendance Report</h1>
+
+    <!-- Attendance Toggle Switch -->
+    <div class="d-flex justify-content-center align-items-center mb-4">
+        <span class="me-2">Weekly</span>
+        <label class="switch">
+            <input type="checkbox" id="toggle-attendance">
+            <span class="slider round"></span>
+        </label>
+        <span class="ms-2">Monthly</span>
+    </div>
+
+    <!-- Attendance Chart Section -->
+    <div class="card shadow p-4 mb-4">
+        <canvas id="attendanceChart" class="chart-container" style="height: 350px;"></canvas>
+    </div>
+
+    {% if not status %}
+    <div class="text-center mb-4">
+        <h5 id="currentDateTime"></h5>
+        <form method="POST" action="{% url 'mark_attendance' %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-success btn-lg">Mark Present</button>
+        </form>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Toggle Switch CSS -->
+<style>
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 34px;
+    }
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: .4s;
+        border-radius: 34px;
+    }
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        transition: .4s;
+        border-radius: 50%;
+    }
+    input:checked + .slider {
+        background-color: #2196F3;
+    }
+    input:checked + .slider:before {
+        transform: translateX(26px);
+    }
+</style>
+
+<!-- Chart.js Script -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Parse the JSON data passed from the view
+    const weeklyData = JSON.parse('{{ weekly_data|escapejs }}');
+    const monthlyData = JSON.parse('{{ monthly_data|escapejs }}');
+
+    // Initialize chart
+    const ctx = document.getElementById('attendanceChart').getContext('2d');
+    const attendanceChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: weeklyData.map(item => item.date),
+            datasets: [{
+                label: 'Attendance',
+                data: weeklyData.map(item => item.status ? 1 : 0),
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 1,  // Show 1 or 0 (present/absent)
+                        callback: function(value) {
+                            return value === 0 ? 'Absent' : 'Present';
+                        }
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: true,
+                    labels: {
+                        color: '#333',
+                        font: {
+                            size: 14
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    // Toggle switch to change between weekly and monthly data
+    document.getElementById('toggle-attendance').addEventListener('change', function() {
+        if (this.checked) {
+            attendanceChart.data.labels = monthlyData.map(item => item.date);
+            attendanceChart.data.datasets[0].data = monthlyData.map(item => item.status ? 1 : 0);
+        } else {
+            attendanceChart.data.labels = weeklyData.map(item => item.date);
+            attendanceChart.data.datasets[0].data = weeklyData.map(item => item.status ? 1 : 0);
+        }
+        attendanceChart.update();
+    });
+
+    // Display current date and time
+    function updateDateTime() {
+        const now = new Date();
+        const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+        document.getElementById('currentDateTime').innerText = now.toLocaleString('en-US', options);
+    }
+    
+    // Call the function to set initial date and time
+    updateDateTime();
+    // Optionally, update every second (comment out if not needed)
+    setInterval(updateDateTime, 1000);
+</script>
+{% endblock %}
