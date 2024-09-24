@@ -12,6 +12,11 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
+
+
+# Load environment variables from the .env file (if present)
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,10 +26,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure--m&_2!jkn^f=tk+-=m-y+c+7t@bh3m_i^0#$rhqlr^=eco^@o='
+SECRET_KEY = os.getenv('SECRET_KEY')
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = os.getenv('DEBUG', 'False').lower() == 'true'
 
 ALLOWED_HOSTS = ['*']
 
@@ -132,12 +138,7 @@ SPECTACULAR_SETTINGS = {
     'SERVE_PERMISSIONS': ['rest_framework.permissions.AllowAny'],
     'COMPONENT_SPLIT_PATCH': True,
     'COMPONENT_SPLIT_REQUEST': True,
-    # "SWAGGER_UI_SETTINGS": {
-    #     "deepLinking": True,
-    #     "persistAuthorization": True,
-    #     "displayOperationId": True,
-    #     "displayRequestDuration": True
-    # },
+  
     'UPLOADED_FILES_USE_URL': True,
     'TITLE': 'Attendance Management System',
     'DESCRIPTION': 'AMS APIs',
